@@ -14,14 +14,14 @@
 
 import argparse
 import errno
-from pscan import exceptions as exc
 import gevent.monkey
-gevent.monkey.patch_all()
 import gevent.pool
 import netaddr
 import prettytable
+from pscan import exceptions as exc
 import resource
 import socket
+gevent.monkey.patch_all()
 
 soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
 resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
@@ -93,7 +93,6 @@ class Scan(object):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect((str(port.host.ip), port.port))
-            #gevent.sleep(0)
             sock.close()
         except Exception as e:
             if e.errno == errno.ECONNREFUSED:

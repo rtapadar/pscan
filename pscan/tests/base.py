@@ -10,17 +10,20 @@
 #   distributed under the License is distributed on an "AS IS" BASIS,
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
+#   limitations under the License.
 
-from pscan.scan import Host 
+import netaddr
+from pscan.scan import Host
+from pscan.scan import Port
 from pscan.scan import Scan
-import netaddr 
 import unittest
+
 
 class TestPscan(unittest.TestCase):
 
     min_port = 1
     max_port = 65535
-    
+
     @classmethod
     def setup(cls):
         pass
@@ -31,13 +34,13 @@ class TestPscan(unittest.TestCase):
 
     def get_scanner_obj(self, hosts, ports=None):
         return Scan(hosts, ports)
-    
+
     def get_port_obj(self, hosts, ports=None):
         return Port(hosts, ports)
-    
+
     def get_host_obj(self, hosts, ports=[]):
         if not ports:
-          ports = range(self.min_port, self.max_port+1)
+            ports = range(self.min_port, self.max_port+1)
         ip_list = [str(ip) for ip in list(netaddr.IPNetwork(hosts))]
         return [Host(ip, ports) for ip in ip_list]
 
@@ -55,4 +58,3 @@ class TestPscan(unittest.TestCase):
 
     def assertHostsEqual(self, x, y):
         [self.assertHostEqual(a, b) for (a, b) in zip(x, y)]
-

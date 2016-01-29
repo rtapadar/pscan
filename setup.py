@@ -28,6 +28,5 @@ setuptools.setup(name='pscan',
                  install_requires=[
                      "gevent>=1.0.2",
                      "netaddr>=0.7.12",
-                     "nose>=1.3.1",
                      "prettytable>=0.7.2"
                  ])
