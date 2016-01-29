@@ -1,0 +1,6 @@
+build/*
+dist/
+pscan.egg-info/
+*.swp
+*.pyc
+.tox

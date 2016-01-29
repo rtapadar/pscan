@@ -22,7 +22,7 @@ setuptools.setup(name='pscan',
                  include_package_data=True,
                  entry_points={
                      'console_scripts': [
-                         'pscan = pscan.pscan:main'
+                         'pscan = pscan.__main__:main'
                      ]
                  },
                  install_requires=[
