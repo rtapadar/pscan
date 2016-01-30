@@ -99,3 +99,9 @@ class TestArgs(TestPscan):
         ports = "0-10"
         with self.assertRaises(exc.InvalidPortRange):
             scanner = self.get_scanner_obj(hosts, ports)
+
+    def test_host_invalid_port_range2(self):
+        hosts = "127.0.0.1"
+        ports = "0-10-20"
+        with self.assertRaises(exc.InvalidPortRange):
+            scanner = self.get_scanner_obj(hosts, ports)
