@@ -95,21 +95,8 @@ class Scan(object):
         except Exception as e:
             if e.errno == errno.ECONNREFUSED:
                 port.status = "Closed"
-            elif e.errno == errno.EMFILE:
+            else:
                 print(e)
-        else:
-            port.status = "Open"
-
-    def _udp(self, port):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.settimeout(0.1)
-            sock.sendto("Hello", (str(port.host.ip), port.port))
-            data, address = sock.recvfrom(255)
-            sock.close()
-        except Exception as e:
-            print(e)
-            port.status = "Closed"
         else:
             port.status = "Open"
 
@@ -119,7 +106,6 @@ class Scan(object):
 
     def udp(self):
         self.protocol = "UDP"
-        self._scan(self._udp)
 
     def _get_service(self, portnum):
         try:
