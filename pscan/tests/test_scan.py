@@ -119,3 +119,25 @@ class TestScan(TestPscan):
         scanner.show()
         self.assertEqual(o.getvalue().strip(), output)
         sys.stdout = s
+
+    @mock.patch('socket.socket.connect')
+    def test_show_partially_open_port_range(self, mock_connect):
+        hosts = "127.0.0.1"
+        ports = "5671-5672"
+        mock_connect.return_value = None
+        mock_connect.side_effect = [IOError(), None]
+        scanner = self.get_scanner_obj(hosts, ports)
+        scanner.tcp()
+        s = sys.stdout
+        o = StringIO()
+        sys.stdout = o
+        output = (
+        "Showing results for target: 127.0.0.1\n"
+        "+------+----------+-------+---------+\n"
+        "| Port | Protocol | State | Service |\n"
+        "+------+----------+-------+---------+\n"
+        "| 5672 |   TCP    |  Open |   amqp  |\n"
+        "+------+----------+-------+---------+"
+        )
+        scanner.show()
+        self.assertEqual(o.getvalue().strip(), output)
