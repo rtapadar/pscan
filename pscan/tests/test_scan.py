@@ -13,6 +13,7 @@
 #   limitations under the License.
 
 from base import TestPscan
+import errno
 import mock
 from StringIO import StringIO
 import sys
@@ -106,7 +107,7 @@ class TestScan(TestPscan):
     def test_show_closed_port_range(self, mock_connect):
         hosts = "127.0.0.1"
         ports = "5673-5674"
-        mock_connect.side_effect = IOError()
+        mock_connect.side_effect = IOError(errno.ECONNREFUSED)
         scanner = self.get_scanner_obj(hosts, ports)
         scanner.tcp()
         s = sys.stdout
