@@ -141,3 +141,15 @@ class TestScan(TestPscan):
         )
         scanner.show()
         self.assertEqual(o.getvalue().strip(), output)
+
+    @mock.patch('socket.socket.connect')
+    def test_udp_port_open(self, mock_connect):
+        hosts = "127.0.0.1"
+        ports = "53"
+        mock_connect.return_value = None
+        scanner = self.get_scanner_obj(hosts, ports)
+        scanner.udp()
+        #h = self.get_host_obj(hosts, [22])
+        #h[0].ports[0].status = "Open"
+        #self.assertPortsEqual(scanner.hosts[0].ports,
+        #                      h[0].ports)
