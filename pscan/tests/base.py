@@ -13,9 +13,7 @@
 #   limitations under the License.
 
 import netaddr
-from pscan.scan import Host
-from pscan.scan import Port
-from pscan.scan import Scan
+import pscan.scan as scan
 import unittest
 
 
@@ -33,22 +31,21 @@ class TestPscan(unittest.TestCase):
         pass
 
     def get_scanner_obj(self, hosts, ports=None):
-        return Scan(hosts, ports)
+        return scan.Scan(hosts, ports)
 
     def get_port_obj(self, hosts, ports=None):
-        return Port(hosts, ports)
+        return scan.Port(hosts, ports)
 
     def get_host_obj(self, hosts, ports=[]):
         if not ports:
             ports = range(self.min_port, self.max_port+1)
         ip_list = [str(ip) for ip in list(netaddr.IPNetwork(hosts))]
-        return [Host(ip, ports) for ip in ip_list]
+        return [scan.Host(ip, ports) for ip in ip_list]
 
     def assertPortEqual(self, x, y):
         self.assertHostEqual(x.host, y.host)
         self.assertEqual(x.port, y.port)
         self.assertEqual(x.status, y.status)
-        self.assertEqual(x.service, y.service)
 
     def assertPortsEqual(self, x, y):
         [self.assertPortEqual(a, b) for (a, b) in zip(x, y)]

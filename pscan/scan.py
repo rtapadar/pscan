@@ -36,7 +36,6 @@ class Port(object):
         self.host = host
         self.port = port
         self.status = "Closed"
-        self.service = None
 
 
 class Host(object):
