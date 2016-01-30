@@ -14,6 +14,8 @@
 
 from base import TestPscan
 import mock
+from StringIO import StringIO
+import sys
 
 
 class TestScan(TestPscan):
@@ -55,3 +57,65 @@ class TestScan(TestPscan):
         h[0].ports[1].status = "Open"
         self.assertPortsEqual(scanner.hosts[0].ports,
                               h[0].ports)
+
+    @mock.patch('socket.socket.connect')
+    def test_show_open_port(self, mock_connect):
+        hosts = "127.0.0.1"
+        ports = "5672"
+        mock_connect.return_value = None
+        scanner = self.get_scanner_obj(hosts, ports)
+        scanner.tcp()
+        s = sys.stdout
+        o = StringIO()
+        sys.stdout = o
+        output = (
+        "Showing results for target: 127.0.0.1\n"
+        "+------+----------+-------+---------+\n"
+        "| Port | Protocol | State | Service |\n"
+        "+------+----------+-------+---------+\n"
+        "| 5672 |   TCP    |  Open |   amqp  |\n"
+        "+------+----------+-------+---------+"
+        )
+        scanner.show()
+        self.assertEqual(o.getvalue().strip(), output)
+        sys.stdout = s
+
+    @mock.patch('socket.socket.connect')
+    def test_show_closed_port(self, mock_connect):
+        hosts = "127.0.0.1"
+        ports = "5673"
+        mock_connect.side_effect = IOError()
+        scanner = self.get_scanner_obj(hosts, ports)
+        scanner.tcp()
+        s = sys.stdout
+        o = StringIO()
+        sys.stdout = o
+        output = (
+        "Showing results for target: 127.0.0.1\n"
+        "+------+----------+--------+---------+\n"
+        "| Port | Protocol | State  | Service |\n"
+        "+------+----------+--------+---------+\n"
+        "| 5673 |   TCP    | Closed | unknown |\n"
+        "+------+----------+--------+---------+"
+        )
+        scanner.show()
+        self.assertEqual(o.getvalue().strip(), output)
+        sys.stdout = s
+
+    @mock.patch('socket.socket.connect')
+    def test_show_closed_port_range(self, mock_connect):
+        hosts = "127.0.0.1"
+        ports = "5673-5674"
+        mock_connect.side_effect = IOError()
+        scanner = self.get_scanner_obj(hosts, ports)
+        scanner.tcp()
+        s = sys.stdout
+        o = StringIO()
+        sys.stdout = o
+        output = (
+        "Showing results for target: 127.0.0.1\n"
+        "All 2 scanned ports are closed on the target."
+        )
+        scanner.show()
+        self.assertEqual(o.getvalue().strip(), output)
+        sys.stdout = s
