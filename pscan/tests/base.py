@@ -22,19 +22,8 @@ class TestPscan(unittest.TestCase):
     min_port = 1
     max_port = 65535
 
-    @classmethod
-    def setup(cls):
-        pass
-
-    @classmethod
-    def teardown(cls):
-        pass
-
     def get_scanner_obj(self, hosts, ports=None):
         return scan.Scan(hosts, ports)
-
-    def get_port_obj(self, hosts, ports=None):
-        return scan.Port(hosts, ports)
 
     def get_host_obj(self, hosts, ports=[]):
         if not ports:
