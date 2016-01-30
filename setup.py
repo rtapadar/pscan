@@ -28,7 +28,7 @@ setuptools.setup(name='pscan',
                  test_suite='nose.collector',
                  tests_require=['nose'],
                  install_requires=[
-                     "gevent>=1.0.2",
+                     "gevent>=1.0",
                      "netaddr>=0.7.12",
                      "prettytable>=0.7.2"
                  ])
