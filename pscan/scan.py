@@ -31,6 +31,8 @@ pool_size = soft
 
 
 class Port(object):
+    """Contains information for a specific port on a host."""
+
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -38,6 +40,8 @@ class Port(object):
 
 
 class Host(object):
+    """Contains information of a host and its ports to be scanned."""
+
     def __init__(self, ip, ports=[]):
         self.ip = netaddr.IPAddress(ip)
         self.ports = [Port(self, port) for port in ports]
@@ -47,6 +51,8 @@ class Host(object):
 
 
 class Scan(object):
+    """Creates the scanner object. Importable as a module."""
+
     def __init__(self, hosts, ports):
         self.pool = gevent.pool.Pool(pool_size)
         self.protocol = None
@@ -65,10 +71,14 @@ class Scan(object):
             raise exc.InvalidIPRange
 
     def _parse_hosts(self, hosts):
+        """Parses the list of hosts and creates corresponding objects."""
+
         ip_list = [str(ip) for ip in list(netaddr.IPNetwork(hosts))]
         return [Host(ip, self.ports) for ip in ip_list]
 
     def _parse_ports(self, ports):
+        """Parses the range of port numbers for validity."""
+
         ports = ports.split('-')
         minport = int(ports[0])
         maxport = minport
@@ -100,16 +110,22 @@ class Scan(object):
         sock.close()
 
     def tcp(self):
+        """Performs a TCP scan."""
+
         self.protocol = "TCP"
         self._scan(self._tcp)
 
     def udp(self):
+        """Performs a UDP scan."""
+
         self.protocol = "UDP"
         print("NOTE: The code for UDP Scanning is not complete."
               " Hence the scan result may not be correct.\n")
         # self._scan(self._udp)
 
     def _get_service(self, portnum):
+        """Returns the service name for a given port."""
+
         try:
             service = socket.getservbyport(portnum)
         except Exception:
@@ -117,6 +133,8 @@ class Scan(object):
         return service
 
     def show(self):
+        """Displays the scanned results."""
+
         for host in self.hosts:
             print("Showing results for target: " + str(host.ip))
             single_port = False
