@@ -29,7 +29,7 @@ optional arguments:
   ```
 
 ##Testing
-The module is tested with ```nosetests``` and ```flake8``` run by ```tox```. The scrupt ```runtests.sh``` can be used to test the module.
+The module is tested with ```nosetests``` and ```flake8``` run by ```tox```. The script ```runtests.sh``` can be used to test the module.
 ```bash
 ./runtests.sh
 ```
