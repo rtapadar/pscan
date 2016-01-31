@@ -56,6 +56,7 @@ class Scan(object):
     def __init__(self, hosts, ports):
         self.pool = gevent.pool.Pool(pool_size)
         self.protocol = None
+        self.inet = None
         self.result = prettytable.PrettyTable(["Port", "Protocol",
                                                "State", "Service"])
         if not ports:
@@ -74,6 +75,10 @@ class Scan(object):
         """Parses the list of hosts and creates corresponding objects."""
 
         ip_list = [str(ip) for ip in list(netaddr.IPNetwork(hosts))]
+        if netaddr.valid_ipv4(ip_list[0]):
+            self.inet = socket.AF_INET
+        elif netaddr.valid_ipv6(ip_list[0]):
+            self.inet = socket.AF_INET6
         return [Host(ip, self.ports) for ip in ip_list]
 
     def _parse_ports(self, ports):
@@ -98,7 +103,7 @@ class Scan(object):
 
     def _tcp(self, port):
         try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock = socket.socket(self.inet, socket.SOCK_STREAM)
             sock.connect((str(port.host.ip), port.port))
         except Exception as e:
             if e.errno == errno.ECONNREFUSED:
