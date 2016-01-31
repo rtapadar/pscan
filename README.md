@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/rtapadar/pscan.svg?branch=master)](https://travis-ci.org/rtapadar/pscan)
 [![Coverage Status](https://coveralls.io/repos/github/rtapadar/pscan/badge.svg?branch=master)](https://coveralls.io/github/rtapadar/pscan?branch=master)
 
-PScan is a simple python port-scanner module. Currently it can perform TCP connect scans on a range of IPv4 and IPv6 hosts.
+```pscan``` is a simple python port-scanner module. Currently it can perform TCP connect scans on a range of IPv4 and IPv6 hosts.
 
 ##Prerequisites
 This module has been tested with Python 2.7.6 on Ubuntu 14.04.
