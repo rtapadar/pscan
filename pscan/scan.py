@@ -27,7 +27,6 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
 
 min_port = 1
 max_port = 65535
-udp_timeout = 0.1
 pool_size = soft
 
 
@@ -91,7 +90,6 @@ class Scan(object):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect((str(port.host.ip), port.port))
-            sock.close()
         except Exception as e:
             if e.errno == errno.ECONNREFUSED:
                 port.status = "Closed"
@@ -99,6 +97,7 @@ class Scan(object):
                 print(e)
         else:
             port.status = "Open"
+        sock.close()
 
     def tcp(self):
         self.protocol = "TCP"
@@ -106,6 +105,9 @@ class Scan(object):
 
     def udp(self):
         self.protocol = "UDP"
+        print("NOTE: The code for UDP Scanning is not complete."
+              " Hence the scan result may not be correct.\n")
+        # self._scan(self._udp)
 
     def _get_service(self, portnum):
         try:
@@ -128,7 +130,7 @@ class Scan(object):
                     self.result.add_row([port.port, self.protocol,
                                          port.status,
                                          self._get_service(port.port)])
-                elif port.status == "Open":
+                elif "Open" in port.status:
                     self.result.add_row([port.port, self.protocol,
                                          port.status,
                                          self._get_service(port.port)])
