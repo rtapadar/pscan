@@ -104,12 +104,13 @@ class Scan(object):
     def _tcp(self, port):
         try:
             sock = socket.socket(self.inet, socket.SOCK_STREAM)
+            sock.settimeout(1)
             sock.connect((str(port.host.ip), port.port))
         except Exception as e:
             if e.errno == errno.ECONNREFUSED:
                 port.status = "Closed"
             else:
-                print(e)
+                pass
         else:
             port.status = "Open"
         sock.close()
