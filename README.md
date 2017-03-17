@@ -1,20 +1,20 @@
-#pscan
+# pscan
 [![Build Status](https://travis-ci.org/rtapadar/pscan.svg?branch=master)](https://travis-ci.org/rtapadar/pscan)
 [![Coverage Status](https://coveralls.io/repos/github/rtapadar/pscan/badge.svg?branch=master)](https://coveralls.io/github/rtapadar/pscan?branch=master)
 
 ```pscan``` is a simple python port-scanner module. Currently it can perform TCP connect scans on a range of IPv4 and IPv6 hosts.
 
-##Prerequisites
+## Prerequisites
 This module has been tested with Python 2.7.6 on Ubuntu 14.04.
 
-##Installation
+## Installation
 ```bash
 git clone https://github.com/rtapadar/pscan.git
 cd pscan
 sudo python setup.py install
 ```
 
-##Usage
+## Usage
 ```bash
 usage: pscan [-h] [-p PORT] [-sU | -sT] target
 
@@ -28,7 +28,7 @@ optional arguments:
   -sT         TCP scan. Default is TCP scan.
   ```
 
-##Testing
+## Testing
 The module is tested with ```nosetests``` and ```flake8``` run by ```tox```. The script ```runtests.sh``` can be used to test the module.
 ```bash
 ./runtests.sh
