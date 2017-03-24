@@ -34,7 +34,7 @@ The module is tested with ```nosetests``` and ```flake8``` run by ```tox```. The
 ./runtests.sh
 ```
 
-##License
+## License
 Copyright 2016 Rudrajit Tapadar
 
 Licensed under the Apache License, Version 2.0 (the "License");
